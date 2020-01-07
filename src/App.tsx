@@ -8,11 +8,12 @@ import TATOTD from './storyboard/TATOTD';
 import WIPBoard from './storyboard/WIPBoard';
 import DERBoard from './storyboard/DERBoard';
 import ProductivityBoard from './storyboard/ProductivityBoard';
+import Map from './map/Map';
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Route path="/" component={Board} exact />
+        <Route path="/" component={Map} exact />
         <Route path="/OTD" component={TATOTD} exact />
         <Route path="/WIP" component={WIPBoard} exact />
         <Route path="/DER" component={DERBoard} exact />
