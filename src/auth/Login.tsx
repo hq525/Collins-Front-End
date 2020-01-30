@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import { Button, TextField, Checkbox, Paper, Grid, Typography} from '@material-ui/core';
 import { Theme } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
 import { observer } from 'mobx-react';
 import CA_Logo from '../images/CA_Logo.jpg';
 import { userStore } from '../index';
+import { ENDPOINT } from "../utils/config";
+import API from "../utils/API";
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -33,15 +31,16 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Login = () => {
   const classes = useStyles({});
   const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [remember, setRemember] = useState(true);
 
   const handleChange = (e: any ) => {
     switch (e.target.name) {
       case 'username':
         setUsername(e.target.value);
         break;
-      case 'email':
-        setEmail(e.target.value);
+      case 'password':
+        setPassword(e.target.value);
         break;
       default:
         return;
@@ -50,7 +49,19 @@ const Login = () => {
 
   const handleLogin = (e:any) => {
     e.preventDefault();
-    console.log("Username is " + username + " while email is " + email)
+    let api = new API();
+    api
+    .post(`${ENDPOINT}/authentication/signIn`, {username, password})
+    .then((data) => {
+      userStore.setUser(data.user);
+      if(remember) {
+        localStorage.jwtToken = data.token;
+      }
+      userStore.setAuthenticated(true);
+    })
+    .catch(err => {
+      console.log(err);
+    });
   }
 
   return(
@@ -87,12 +98,23 @@ const Login = () => {
                         margin="normal"
                         required
                         fullWidth
-                        name="email"
-                        label="Email"
-                        id="email"
-                        value={email}
+                        name="password"
+                        type="password"
+                        label="Password"
+                        id="password"
+                        value={password}
                         onChange={handleChange}
                       />
+                    </Grid>
+                    <Grid container spacing={2} style={{paddingTop: "15px"}}>
+                      <Checkbox
+                        checked={remember}
+                        onChange={(event) => {setRemember(event.target.checked);}}
+                        color="default"
+                        value="default"
+                        inputProps={{ 'aria-label': 'checkbox with default color' }}
+                      />
+                      <span style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>Remember me</span>
                     </Grid>
                     <Grid container style={{paddingLeft: "10px", paddingRight: "10px"}} justify="space-between" alignItems="center">
                       <Grid item>

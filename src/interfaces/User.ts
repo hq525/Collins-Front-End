@@ -1,9 +1,5 @@
 export default interface User {
-  userId: number;
+  id: number;
   username: string;
-  accountType: string;
-  emailAddress: string;
-  firstName: string;
-  lastName: string;
-  section: string;
+  sectionID: number;
 }

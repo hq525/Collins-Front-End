@@ -4,7 +4,7 @@ import { List, ListItem, ListItemText } from '@material-ui/core';
 
 export default function Legend(props) {
     return (
-        <div style={{maxHeight: 150, overflow: 'auto', width: "100%"}}>
+        <div style={{maxHeight: props.maxHeight, overflow: 'auto', width: "100%"}}>
             <List>
                 {
                     props.data.map((entry, index) => {

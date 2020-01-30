@@ -1,0 +1,15 @@
+.maintenance {
+    background-color: bisque !important;
+}
+
+.maintenance:hover {
+    background-color: #ffd9b3 !important;
+}
+
+.alert {
+    background-color: #ffe6e6 !important;
+}
+
+.alert:hover {
+    background-color: #fbd0d0 !important;
+}
