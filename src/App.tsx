@@ -3,12 +3,6 @@ import "./App.css";
 import jwtDecode from "jwt-decode";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import Login from "./auth/Login";
-import Dashboard from './dashboard/Dashboard'
-import Board from './flipboard/Board';
-import TATOTD from './storyboard/TATOTD';
-import WIPBoard from './storyboard/WIPBoard';
-import DERBoard from './storyboard/DERBoard';
-import ProductivityBoard from './storyboard/ProductivityBoard';
 import Main from './Map/Main';
 import Schedule from './Map/Schedule';
 import Data from './Map/Data';
@@ -17,7 +11,7 @@ import CheeseburgerMenu from 'cheeseburger-menu'
 import HamburgerMenu from 'react-hamburger-menu'
 import { userStore } from "./index";
 import { observer } from "mobx-react";
-import { Fab, Snackbar, Button } from '@material-ui/core';
+import { Fab, Snackbar } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
@@ -105,10 +99,6 @@ function App() {
           <Route path="/schedule" render={(props) => <Schedule {...props} setError={setError} />} exact />
           <Route path="/data" render={() => <Data setError={setError} />} exact />
           <Route path="/edit" render={() => <Edit setError={setError} />} exact />
-          {/* <Route path="/OTD" component={TATOTD} exact />
-          <Route path="/WIP" component={WIPBoard} exact />
-          <Route path="/DER" component={DERBoard} exact />
-          <Route path="/Productivity" component={ProductivityBoard} exact /> */}
         </BrowserRouter>
         <Snackbar 
         anchorOrigin={{

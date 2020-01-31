@@ -19,7 +19,7 @@ export default function SectionData(props) {
             let sectionData = [];
             data.sections.forEach((section, index) => {
                 if(section.name !== 'ROOT') {
-                    sectionData.push({id: index, name: section.name, ID: section.id});
+                    sectionData.push({id: index, name: section.name, _id: section._id});
                 }
             })
             setSectionData(sectionData);
@@ -57,7 +57,7 @@ export default function SectionData(props) {
                   api
                   .post(`${ENDPOINT}/section/new`, {name: row.name})
                   .then((data) => {
-                    changedRows.push({id: startingAddedId + index, name: row.name, ID: data.section.id})
+                    changedRows.push({id: startingAddedId + index, name: row.name, _id: data.section._id})
                     resolve();
                   })
                   .catch((error) => {
@@ -80,7 +80,7 @@ export default function SectionData(props) {
             setLoading(true);
             let index = parseInt(Object.keys(changed)[0])
             api
-            .put(`${ENDPOINT}/section/update`, {id: sectionData[index - 1].ID, name: changed[index].name})
+            .put(`${ENDPOINT}/section/update`, {_id: sectionData[index - 1]._id, name: changed[index].name})
             .then(() => {
                 setLoading(false);
                 changedRows = sectionData.map(row => (changed[row.id] ? { ...row, ...changed[row.id] } : row));
@@ -96,7 +96,7 @@ export default function SectionData(props) {
             let promises = deleted.map((row, index) => {
                 return new Promise((resolve, reject) => {
                     api
-                    .post(`${ENDPOINT}/section/delete`, {id: sectionData[deleted[index] - 1].ID})
+                    .post(`${ENDPOINT}/section/delete`, {_id: sectionData[deleted[index] - 1]._id})
                     .then(() => {
                         resolve();
                     })

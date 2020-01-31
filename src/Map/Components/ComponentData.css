@@ -1,0 +1,5 @@
+div[class*="TableContainer-root-"] {
+    width: 100%;
+    overflow: visible !important; 
+    flex-grow: 1;
+}

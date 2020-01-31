@@ -45,7 +45,7 @@ export default function Board(props) {
     const [loading, setLoading] = React.useState(false);
     const [status, setStatus] = React.useState('');
     const [machine, setMachine] = React.useState({
-        id: props.machineID,
+        _id: props.machineID,
         name: "" 
     });
     React.useEffect(() => {
@@ -54,7 +54,7 @@ export default function Board(props) {
         setLoading(true);
         let api = new API();
         api
-        .get(`${ENDPOINT}/machine/board?id=${props.machineID}`)
+        .get(`${ENDPOINT}/machine/board?_id=${props.machineID}`)
         .then((data) => {
             setStatus(data.status);
             setMachine({...machine, name: data.machine.name});
@@ -83,12 +83,12 @@ export default function Board(props) {
         startDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 23, 59, 59, 999);
         api
         .post(`${ENDPOINT}/breakdown/new`, {
-            "machineID": machine.id,
+            "machineID": machine._id,
             startDate
         })
         .then((data) => {
             api
-            .get(`${ENDPOINT}/machine/board?id=${props.machineID}`)
+            .get(`${ENDPOINT}/machine/board?_id=${props.machineID}`)
             .then((data) => {
                 setStatus(data.status);
                 setMachine({...machine, name: data.machine.name});
@@ -110,11 +110,11 @@ export default function Board(props) {
         let api = new API();
         api
         .put(`${ENDPOINT}/breakdown/undo`, {
-            machineID: machine.id
+            machineID: machine._id
         })
         .then((data) => {
             api
-            .get(`${ENDPOINT}/machine/board?id=${props.machineID}`)
+            .get(`${ENDPOINT}/machine/board?_id=${props.machineID}`)
             .then((data) => {
                 setStatus(data.status);
                 setMachine({...machine, name: data.machine.name});
@@ -136,11 +136,11 @@ export default function Board(props) {
         let api = new API();
         api
         .put(`${ENDPOINT}/maintenance/finish`, {
-            machineID: machine.id
+            machineID: machine._id
         })
         .then((data) => {
             api
-            .get(`${ENDPOINT}/machine/board?id=${machine.id}`)
+            .get(`${ENDPOINT}/machine/board?_id=${machine._id}`)
             .then((data) => {
                 setStatus(data.status);
                 setMachine({...machine, name: data.machine.name});

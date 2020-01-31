@@ -1,9 +1,9 @@
 import React, {useCallback} from "react";
 import { makeStyles, createStyles } from '@material-ui/styles';
-import { Paper, Grid as MainGrid, Modal, Button, FormControl, List, ListItem, ListItemText, Theme, Select, CircularProgress } from '@material-ui/core';
+import { Grid as MainGrid, Modal, Button, FormControl, List, ListItem, ListItemText, Theme, Select, CircularProgress } from '@material-ui/core';
 import SectionData from "./Components/SectionData";
 import JobData from "./Components/JobData";
-import { Grid, Table, TableHeaderRow } from '@devexpress/dx-react-grid-material-ui';
+import ComponentData from "./Components/ComponentData";
 import {useDropzone} from 'react-dropzone'
 import { ENDPOINT } from "../utils/config";
 import API from "../utils/API";
@@ -167,8 +167,7 @@ export default function Data(props) {
     const handleClose = () => {
       setOpen(false);
     };
-    const [loading, setLoading] = React.useState(true);
-    const [dataType, setDataType] = React.useState('SECTIONS');
+    const [dataType, setDataType] = React.useState('COMPONENTS');
     const handleDataTypeChange = (event) => {
         setDataType(event.target.value)      
     }
@@ -178,7 +177,7 @@ export default function Data(props) {
             return(
                 <div style={{display: "flex", flexFlow: "column", height: "100%"}}>
                     <Top classess={classes} dataType={dataType} handleDataTypeChange={handleDataTypeChange} handleOpen={handleOpen} />
-                        <JobData />
+                        <JobData setError={props.setError} />
                     <Modal
                         aria-labelledby="simple-modal-title"
                         aria-describedby="simple-modal-description"
@@ -193,7 +192,7 @@ export default function Data(props) {
             return (
                 <div style={{height: "100%"}}>
                     <Top classess={classes} dataType={dataType} handleDataTypeChange={handleDataTypeChange} handleOpen={handleOpen} />
-                    <SectionData />
+                    <SectionData setError={props.setError} />
                     <Modal
                         aria-labelledby="simple-modal-title"
                         aria-describedby="simple-modal-description"
@@ -206,24 +205,17 @@ export default function Data(props) {
             )
         case 'COMPONENTS':
             return (
-                <div style={{display: "flex", flexFlow: "column", height: "100%"}}>
+                <div style={{height: "100%"}}>
                     <Top classess={classes} dataType={dataType} handleDataTypeChange={handleDataTypeChange} handleOpen={handleOpen} />
-                    { loading ? (
-                        <div style={{flexGrow: 1, width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                            <CircularProgress size={100} />
-                        </div>
-                    ) : (
-                        <div>
-                            <Modal
-                                aria-labelledby="simple-modal-title"
-                                aria-describedby="simple-modal-description"
-                                open={open}
-                                onClose={handleClose}
-                            >
-                                <FileUpload setError={props.setError} />
-                            </Modal>
-                        </div>
-                    )}
+                    <ComponentData setError={props.setError} />
+                    <Modal
+                        aria-labelledby="simple-modal-title"
+                        aria-describedby="simple-modal-description"
+                        open={open}
+                        onClose={handleClose}
+                    >
+                        <FileUpload setError={props.setError} />
+                    </Modal>
                 </div>
             )
     }

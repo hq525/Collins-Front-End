@@ -57,7 +57,7 @@ export default function Edit(props) {
             let sectionData = [];
             data.sections.forEach((section, index) => {
                 if(section.name !== 'ROOT') {
-                    sectionData.push({name: section.name, id: section.id});
+                    sectionData.push({name: section.name, _id: section._id});
                 }
             })
             setSectionData(sectionData);
@@ -84,8 +84,8 @@ export default function Edit(props) {
                     name: machine.name,
                     sectionID: machine.sectionID
                 }
-                tempArray.push(machine.id);
-                setAllMachines(new Map(allMachines.set(machine.id, temp)));
+                tempArray.push(machine._id);
+                setAllMachines(new Map(allMachines.set(machine._id, temp)));
             })
             setMachineIDs(tempArray);
         })
@@ -108,8 +108,8 @@ export default function Edit(props) {
                     fontSize: text.fontSize,
                     rotation: text.rotation
                 }
-                tempArray.push(text.id);
-                setAllTexts(new Map(allTexts.set(text.id, temp)));
+                tempArray.push(text._id);
+                setAllTexts(new Map(allTexts.set(text._id, temp)));
             })
             setTextIDs(tempArray);
         })
@@ -130,7 +130,7 @@ export default function Edit(props) {
             height: machineState.height
         })
         .then((data) => {
-            machineIDs.push(data.machine.id)
+            machineIDs.push(data.machine._id)
             setMachineIDs(machineIDs);
             let temp = {
                 x: data.machine.x,
@@ -140,7 +140,7 @@ export default function Edit(props) {
                 name: data.machine.name,
                 sectionID: data.machine.sectionID
             }
-            setAllMachines(new Map(allMachines.set(data.machine.id, temp)))
+            setAllMachines(new Map(allMachines.set(data.machine._id, temp)))
             setLoading(false);
         })
         .catch((error) => {
@@ -160,7 +160,7 @@ export default function Edit(props) {
             rotation: textState.rotation
         })
         .then((data) => {
-            textIDs.push(data.text.id);
+            textIDs.push(data.text._id);
             setTextIDs(textIDs);
             let temp ={
                 text: data.text.text,
@@ -169,7 +169,7 @@ export default function Edit(props) {
                 fontSize: data.text.fontSize,
                 rotation: data.text.rotation
             }
-            setAllTexts(new Map(allTexts.set(data.text.id, temp)))
+            setAllTexts(new Map(allTexts.set(data.text._id, temp)))
             setLoading(false);
         })
         .catch((error) => {
@@ -180,7 +180,7 @@ export default function Edit(props) {
     const resetSingleText = () => {
         let api = new API();
         api
-        .get(`${ENDPOINT}/text/single?id=${selectedTextID}`)
+        .get(`${ENDPOINT}/text/single?_id=${selectedTextID}`)
         .then((data) => {
             let temp ={
                 text: data.text.text,
@@ -198,7 +198,7 @@ export default function Edit(props) {
     const resetSingleMachine = () => {
         let api = new API();
         api
-        .get(`${ENDPOINT}/machine/single?id=${selectedMachineID}`)
+        .get(`${ENDPOINT}/machine/single?_id=${selectedMachineID}`)
         .then((data) => {
             let temp = {
                 x: data.machine.x,
@@ -234,8 +234,8 @@ export default function Edit(props) {
                     fontSize: text.fontSize,
                     rotation: text.rotation
                 }
-                tempArray.push(text.id);
-                setAllTexts(new Map(allTexts.set(text.id, temp)));
+                tempArray.push(text._id);
+                setAllTexts(new Map(allTexts.set(text._id, temp)));
             })
             setTextIDs(tempArray);
             setLoading(false);
@@ -265,8 +265,8 @@ export default function Edit(props) {
                     name: machine.name,
                     sectionID: machine.sectionID
                 }
-                tempArray.push(machine.id);
-                setAllMachines(new Map(allMachines.set(machine.id, temp)));
+                tempArray.push(machine._id);
+                setAllMachines(new Map(allMachines.set(machine._id, temp)));
             })
             setMachineIDs(tempArray);
             setDropdownValue(allMachines.get(selectedMachineID).sectionID);
@@ -282,7 +282,7 @@ export default function Edit(props) {
         let api = new API();
         api
         .put(`${ENDPOINT}/machine/update`, {
-            id: selectedMachineID,
+            _id: selectedMachineID,
             name: allMachines.get(selectedMachineID).name,
             sectionID: allMachines.get(selectedMachineID).sectionID,
             x: allMachines.get(selectedMachineID).x,
@@ -319,7 +319,7 @@ export default function Edit(props) {
                     let api = new API();
                     api
                     .post(`${ENDPOINT}/machine/delete`, {
-                        id: selectedMachineID
+                        _id: selectedMachineID
                     })
                     .then(() => {
                         api
@@ -339,8 +339,8 @@ export default function Edit(props) {
                                     name: machine.name,
                                     sectionID: machine.sectionID
                                 }
-                                tempArray.push(machine.id);
-                                setAllMachines(new Map(allMachines.set(machine.id, temp)));
+                                tempArray.push(machine._id);
+                                setAllMachines(new Map(allMachines.set(machine._id, temp)));
                             })
                             setMachineIDs(tempArray);
                             setSelectedMachineID("");
@@ -369,7 +369,7 @@ export default function Edit(props) {
         let api = new API();
         api
         .put(`${ENDPOINT}/text/update`, {
-            id: selectedTextID,
+            _id: selectedTextID,
             text: allTexts.get(selectedTextID).text,
             x: allTexts.get(selectedTextID).x,
             y: allTexts.get(selectedTextID).y,
@@ -404,7 +404,7 @@ export default function Edit(props) {
                     let api = new API();
                     api
                     .post(`${ENDPOINT}/text/delete`, {
-                        id: selectedTextID
+                        _id: selectedTextID
                     })
                     .then(() => {
                         api
@@ -423,8 +423,8 @@ export default function Edit(props) {
                                     fontSize: text.fontSize,
                                     rotation: text.rotation
                                 }
-                                tempArray.push(text.id);
-                                setAllTexts(new Map(allTexts.set(text.id, temp)));
+                                tempArray.push(text._id);
+                                setAllTexts(new Map(allTexts.set(text._id, temp)));
                             })
                             setTextIDs(tempArray);
                             setSelectedTextID("");
@@ -462,19 +462,19 @@ export default function Edit(props) {
                                 <MapImage />
                                 {
                                     includeMachines && (
-                                        machineIDs.map((id) => <Rect 
-                                        x={allMachines.get(id).x}
-                                        y={allMachines.get(id).y}
-                                        width={allMachines.get(id).width}
-                                        height={allMachines.get(id).height}
+                                        machineIDs.map((_id) => <Rect 
+                                        x={allMachines.get(_id).x}
+                                        y={allMachines.get(_id).y}
+                                        width={allMachines.get(_id).width}
+                                        height={allMachines.get(_id).height}
                                         fill={"#ffffb3"}
                                         draggable={(!addText && ! addMachine)}
                                         onDragMove = {(event) => {
-                                            setAllMachines(new Map(allMachines.set(id, {...allMachines.get(id), x: event.currentTarget.attrs.x, y: event.currentTarget.attrs.y})));
+                                            setAllMachines(new Map(allMachines.set(_id, {...allMachines.get(_id), x: event.currentTarget.attrs.x, y: event.currentTarget.attrs.y})));
                                         }}
-                                        onClick={e => {setSelectedMachineID(id); setDropdownValue(allMachines.get(id).sectionID);}}
-                                        onDragStart={e => {setSelectedMachineID(id); setDropdownValue(allMachines.get(id).sectionID);}}
-                                        onTap={e => {setSelectedMachineID(id); setDropdownValue(allMachines.get(id).sectionID);}}
+                                        onClick={e => {setSelectedMachineID(_id); setDropdownValue(allMachines.get(_id).sectionID);}}
+                                        onDragStart={e => {setSelectedMachineID(_id); setDropdownValue(allMachines.get(_id).sectionID);}}
+                                        onTap={e => {setSelectedMachineID(_id); setDropdownValue(allMachines.get(_id).sectionID);}}
                                         />)
                                     )
                                 }
@@ -493,20 +493,20 @@ export default function Edit(props) {
                                 }
                                 {
                                     includeText && (
-                                        textIDs.map((id) => <Text 
-                                        text={allTexts.get(id).text} 
-                                        x={allTexts.get(id).x} 
-                                        y = {allTexts.get(id).y} 
-                                        rotation={allTexts.get(id).rotation}
-                                        fontSize={allTexts.get(id).fontSize}
+                                        textIDs.map((_id) => <Text 
+                                        text={allTexts.get(_id).text} 
+                                        x={allTexts.get(_id).x} 
+                                        y = {allTexts.get(_id).y} 
+                                        rotation={allTexts.get(_id).rotation}
+                                        fontSize={allTexts.get(_id).fontSize}
                                         fill={"black"}
                                         draggable={(!addText && ! addMachine)}
                                         onDragMove = {(event) => {
-                                            setAllTexts(new Map(allTexts.set(id, {...allTexts.get(id), x: event.currentTarget.attrs.x, y: event.currentTarget.attrs.y})));
+                                            setAllTexts(new Map(allTexts.set(_id, {...allTexts.get(_id), x: event.currentTarget.attrs.x, y: event.currentTarget.attrs.y})));
                                         }}
-                                        onClick={e => setSelectedTextID(id)}
-                                        onDragStart={e => setSelectedTextID(id)}
-                                        onTap={e => setSelectedTextID(id)}
+                                        onClick={e => setSelectedTextID(_id)}
+                                        onDragStart={e => setSelectedTextID(_id)}
+                                        onTap={e => setSelectedTextID(_id)}
                                         />)
                                     )
                                 }
@@ -676,11 +676,11 @@ export default function Edit(props) {
                                                         data={sectionData}
                                                         value={dropdownValue}
                                                         textField="name"
-                                                        valueField="id"
+                                                        valueField="_id"
                                                         defaultValue={allMachines.get(selectedMachineID).sectionID}
                                                         onChange={value => {
-                                                            setAllMachines(new Map(allMachines.set(selectedMachineID, {...allMachines.get(selectedMachineID), sectionID: value.id})));
-                                                            setDropdownValue(value.id);
+                                                            setAllMachines(new Map(allMachines.set(selectedMachineID, {...allMachines.get(selectedMachineID), sectionID: value._id})));
+                                                            setDropdownValue(value._id);
                                                         }}
                                                         />
                                                     </div>
@@ -869,8 +869,8 @@ export default function Edit(props) {
                                                     filter="contains"
                                                     data={sectionData}
                                                     textField="name"
-                                                    valueField="id"
-                                                    onChange={value => {setMachineState({...machineState, section: value.name, sectionID: value.id})}}
+                                                    valueField="_id"
+                                                    onChange={value => {setMachineState({...machineState, section: value.name, sectionID: value._id})}}
                                                     />
                                                 </div>
                                             </div>

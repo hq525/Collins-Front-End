@@ -46,7 +46,7 @@ export default function Schedule(props) {
     const [formActualEndDate, setFormActualEndDate] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 23, 59, 59, 999));
     const [formID, setFormID] = useState("");
     const [breakdownData, setBreakdownData] = useState({
-        id: "",
+        _id: "",
         startDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 23, 59, 59, 999),
         endDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 23, 59, 59, 999)
     });
@@ -70,7 +70,7 @@ export default function Schedule(props) {
                     .then((data) => {
                         let machineData = [];
                         data.machines.forEach((machine, index) => {
-                            machineData.push({name: machine.name, id: machine.id});
+                            machineData.push({name: machine.name, _id: machine._id});
                         })
                         setMachineData(machineData);
                         resolve();
@@ -219,6 +219,10 @@ export default function Schedule(props) {
                         d = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999);
                         let end = new Date();
                         end = new Date(end.getFullYear(), end.getMonth(), end.getDate(), 23, 59, 59, 999);
+                        let yearEndDate = new Date(d.getFullYear(), 12, 0, 23, 59, 59, 999)
+                        if(end > yearEndDate) {
+                            end = yearEndDate
+                        }
                         let currentDate = new Date()
                         currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 23, 59, 59, 999);
                         if(d < currentDate) {
@@ -262,14 +266,14 @@ export default function Schedule(props) {
                 if(selectedDate !== null) {
                     if((maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`)) !== undefined) {
                         if(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).type === "MAINTENANCE") {
-                            setFormID(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.id);
+                            setFormID(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance._id);
                             setFormStartDate(new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.startDate));
                             setFormEndDate(new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.endDate));
                             setFormActualEndDate((maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.actualEndDate) ? new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.actualEndDate) : new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.startDate))
                         } else {
                             setBreakdownData({
                                 ...breakdownData, 
-                                id: maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.id,
+                                _id: maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown._id,
                                 startDate: new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.startDate),
                                 endDate: (maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.endDate) ? new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.endDate) : new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.startDate)
                             })
@@ -308,14 +312,14 @@ export default function Schedule(props) {
             if(selectedDate !== null) {
                 if((maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`)) !== undefined) {
                     if(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).type === "MAINTENANCE") {
-                        setFormID(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.id);
+                        setFormID(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance._id);
                         setFormStartDate(new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.startDate));
                         setFormEndDate(new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.endDate));
                         setFormActualEndDate((maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.actualEndDate) ? new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.actualEndDate) : new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.startDate))
                     } else {
                         setBreakdownData({
                             ...breakdownData, 
-                            id: maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.id,
+                            _id: maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown._id,
                             startDate: new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.startDate),
                             endDate: (maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.endDate) ? new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.endDate) : new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.startDate)
                         })
@@ -340,14 +344,14 @@ export default function Schedule(props) {
     const handleSelectedDateChange = (date: Date) => {
         if((maintenanceData.get(`${date.getDate()},${date.getMonth()}`)) !== undefined) {
             if(maintenanceData.get(`${date.getDate()},${date.getMonth()}`).type === "MAINTENANCE") {
-                setFormID(maintenanceData.get(`${date.getDate()},${date.getMonth()}`).maintenance.id);
+                setFormID(maintenanceData.get(`${date.getDate()},${date.getMonth()}`).maintenance._id);
                 setFormStartDate(new Date(maintenanceData.get(`${date.getDate()},${date.getMonth()}`).maintenance.startDate));
                 setFormEndDate(new Date(maintenanceData.get(`${date.getDate()},${date.getMonth()}`).maintenance.endDate));
                 setFormActualEndDate((maintenanceData.get(`${date.getDate()},${date.getMonth()}`).maintenance.actualEndDate) ? new Date(maintenanceData.get(`${date.getDate()},${date.getMonth()}`).maintenance.actualEndDate) : new Date(maintenanceData.get(`${date.getDate()},${date.getMonth()}`).maintenance.startDate))
             } else {
                 setBreakdownData({
                     ...breakdownData, 
-                    id: maintenanceData.get(`${date.getDate()},${date.getMonth()}`).breakdown.id,
+                    _id: maintenanceData.get(`${date.getDate()},${date.getMonth()}`).breakdown._id,
                     startDate: new Date(maintenanceData.get(`${date.getDate()},${date.getMonth()}`).breakdown.startDate),
                     endDate: (maintenanceData.get(`${date.getDate()},${date.getMonth()}`).breakdown.endDate) ? new Date(maintenanceData.get(`${date.getDate()},${date.getMonth()}`).breakdown.endDate) : new Date(maintenanceData.get(`${date.getDate()},${date.getMonth()}`).breakdown.startDate)
                 })
@@ -432,7 +436,7 @@ export default function Schedule(props) {
                       await new Promise((resolve, reject) => {
                           api
                           .post(`${ENDPOINT}/breakdown/delete`, {
-                              id: breakdownData.id
+                              _id: breakdownData._id
                           })
                           .then(() => {
                               resolve();
@@ -455,14 +459,14 @@ export default function Schedule(props) {
                       if(selectedDate !== null) {
                           if((maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`)) !== undefined) {
                               if(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).type === "MAINTENANCE") {
-                                  setFormID(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.id);
+                                  setFormID(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance._id);
                                   setFormStartDate(new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.startDate));
                                   setFormEndDate(new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.endDate));
                                   setFormActualEndDate((maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.actualEndDate) ? new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.actualEndDate) : new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.startDate))
                               } else {
                                   setBreakdownData({
                                       ...breakdownData, 
-                                      id: maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.id,
+                                      _id: maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown._id,
                                       startDate: new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.startDate),
                                       endDate: (maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.endDate) ? new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.endDate) : new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.startDate)
                                   })
@@ -498,7 +502,7 @@ export default function Schedule(props) {
                     await new Promise((resolve, reject) => {
                         api
                         .post(`${ENDPOINT}/maintenance/delete`, {
-                            id: formID
+                            _id: formID
                         })
                         .then(() => {
                             resolve();
@@ -521,14 +525,14 @@ export default function Schedule(props) {
                     if(selectedDate !== null) {
                         if((maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`)) !== undefined) {
                             if(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).type === "MAINTENANCE") {
-                                setFormID(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.id);
+                                setFormID(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance._id);
                                 setFormStartDate(new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.startDate));
                                 setFormEndDate(new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.endDate));
                                 setFormActualEndDate((maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.actualEndDate) ? new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.actualEndDate) : new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.startDate))
                             } else {
                                 setBreakdownData({
                                     ...breakdownData, 
-                                    id: maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.id,
+                                    _id: maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown._id,
                                     startDate: new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.startDate),
                                     endDate: (maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.endDate) ? new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.endDate) : new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.startDate)
                                 })
@@ -557,7 +561,7 @@ export default function Schedule(props) {
             await new Promise((resolve, reject) => {
                 api
                 .put(`${ENDPOINT}/breakdown/update`, {
-                    id: breakdownData.id,
+                    _id: breakdownData._id,
                     startDate: breakdownData.startDate,
                     endDate: breakdownChecked ? breakdownData.endDate : undefined,
                     machineID: machine
@@ -589,7 +593,7 @@ export default function Schedule(props) {
             await new Promise((resolve, reject) => {
                 api
                 .put(`${ENDPOINT}/maintenance/update`, {
-                    id: formID,
+                    _id: formID,
                     startDate: formStartDate,
                     endDate: formEndDate,
                     actualEndDate: checked ? formActualEndDate : undefined,
@@ -638,10 +642,10 @@ export default function Schedule(props) {
                             filter="contains"
                             data={machineData}
                             textField="name"
-                            valueField="id"
+                            valueField="_id"
                             defaultValue={machine}
                             placeholder="Select machine..."
-                            onChange={value => {handleMachineChange(value.id)}}
+                            onChange={value => {handleMachineChange(value._id)}}
                             />
                         </div>
                     </div>

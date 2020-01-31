@@ -109,8 +109,8 @@ export default function Main(props) {
     }, [amber]);
     const [open, setOpen] = React.useState(false);
 
-    const handleOpen = (id) => {
-      setMachineID(id);
+    const handleOpen = (_id) => {
+      setMachineID(_id);
       setOpen(true);
     };
   
@@ -166,8 +166,8 @@ export default function Main(props) {
                     width={machine.machine.width}
                     height={machine.machine.height}
                     fill={"hsla(32, 100%, 59%, 0)"}
-                    onClick={() => {handleOpen(machine.machine.id)}} 
-                    onTap={() => {handleOpen(machine.machine.id)}}
+                    onClick={() => {handleOpen(machine.machine._id)}} 
+                    onTap={() => {handleOpen(machine.machine._id)}}
                     />)
                   }
               </Layer>
