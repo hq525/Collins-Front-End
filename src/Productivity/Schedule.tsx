@@ -14,6 +14,7 @@ import DropdownList from 'react-widgets/lib/DropdownList'
 import 'react-widgets/dist/css/react-widgets.css';
 import { confirmAlert } from 'react-confirm-alert'; 
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
+import ProductivityMenu  from "./ProductivityMenu"
 
 const monthss = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
@@ -81,7 +82,11 @@ export default function Schedule(props) {
                 })
             } catch (error) {
                 setLoading(false);
-                props.setError(error.data.message);
+                if(error.data && error.data.message) {
+                    props.setError(error.data.message);
+                } else {
+                    props.setError("An error occurred");
+                }
             }
             if(props.match.params.machineID) {
                 setMachine(props.match.params.machineID)
@@ -89,7 +94,11 @@ export default function Schedule(props) {
                     await updateCalendar(props.match.params.machineID, new Date().getFullYear());
                 } catch(error) {
                     setLoading(false);
-                    props.setError(error.data.message);
+                    if(error.data && error.data.message) {
+                        props.setError(error.data.message);
+                    } else {
+                        props.setError("An error occurred");
+                    }
                 }
             } else {
                 let temp = [];
@@ -260,7 +269,11 @@ export default function Schedule(props) {
                 await updateCalendar(machine, currentYear);
             } catch(error) {
                 setLoading(false);
-                props.setError(error.data.message);
+                if(error.data && error.data.message) {
+                    props.setError(error.data.message);
+                } else {
+                    props.setError("An error occurred");
+                }
             }
             try {
                 if(selectedDate !== null) {
@@ -282,7 +295,11 @@ export default function Schedule(props) {
                 }
             } catch (error) {
                 setLoading(false);
-                props.setError(error);
+                if(error.data && error.data.message) {
+                    props.setError(error.data.message);
+                } else {
+                    props.setError("An error occurred");
+                }
             }
         } else {
             let temp = [];
@@ -306,7 +323,11 @@ export default function Schedule(props) {
             await updateCalendar(machineID, year);
         } catch(error) {
             setLoading(false);
-            props.setError(error.data.message);
+            if(error.data && error.data.message) {
+                props.setError(error.data.message);
+            } else {
+                props.setError("An error occurred");
+            }
         }
         try {
             if(selectedDate !== null) {
@@ -328,7 +349,11 @@ export default function Schedule(props) {
             }
         } catch (error) {
             setLoading(false);
-            props.setError(error);
+            if(error.data && error.data.message) {
+                props.setError(error.data.message);
+            } else {
+                props.setError("An error occurred");
+            }
         }
         setLoading(false);
     }
@@ -380,13 +405,47 @@ export default function Schedule(props) {
             })
         } catch (error) {
             setLoading(false);
-            props.setError(error.data.message);
+            if(error.data && error.data.message) {
+                props.setError(error.data.message);
+            } else {
+                props.setError("An error occurred");
+            }
         }
         try {
             await updateCalendar(machine, year);
         } catch(error) {
             setLoading(false);
-            props.setError(error.data.message);
+            if(error.data && error.data.message) {
+                props.setError(error.data.message);
+            } else {
+                props.setError("An error occurred");
+            }
+        }
+        try {
+            if(selectedDate !== null) {
+                if((maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`)) !== undefined) {
+                    if(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).type === "MAINTENANCE") {
+                        setFormID(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance._id);
+                        setFormStartDate(new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.startDate));
+                        setFormEndDate(new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.endDate));
+                        setFormActualEndDate((maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.actualEndDate) ? new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.actualEndDate) : new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).maintenance.startDate))
+                    } else {
+                        setBreakdownData({
+                            ...breakdownData, 
+                            _id: maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown._id,
+                            startDate: new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.startDate),
+                            endDate: (maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.endDate) ? new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.endDate) : new Date(maintenanceData.get(`${selectedDate.getDate()},${selectedDate.getMonth()}`).breakdown.startDate)
+                        })
+                    }
+                }
+            }
+        } catch (error) {
+            setLoading(false);
+            if(error.data && error.data.message) {
+              props.setError(error.data.message);
+          } else {
+              props.setError("An error occurred");
+          }
         }
         setLoading(false);
       }
@@ -411,13 +470,21 @@ export default function Schedule(props) {
             })
         } catch (error) {
             setLoading(false);
-            props.setError(error.data.message);
+            if(error.data && error.data.message) {
+                props.setError(error.data.message);
+            } else {
+                props.setError("An error occurred");
+            }
         }
         try {
             await updateCalendar(machine, year);
         } catch(error) {
             setLoading(false);
-            props.setError(error.data.message);
+            if(error.data && error.data.message) {
+                props.setError(error.data.message);
+            } else {
+                props.setError("An error occurred");
+            }
         }
         setLoading(false);
       }
@@ -446,14 +513,22 @@ export default function Schedule(props) {
                           })
                       })
                   } catch (error) {
-                      setLoading(false);
-                      props.setError(error.data.message);
+                    setLoading(false);
+                    if(error.data && error.data.message) {
+                        props.setError(error.data.message);
+                    } else {
+                        props.setError("An error occurred");
+                    }
                   }
                   try {
                       await updateCalendar(machine, year);
                   } catch(error) {
                       setLoading(false);
-                      props.setError(error.data.message);
+                      if(error.data && error.data.message) {
+                            props.setError(error.data.message);
+                        } else {
+                            props.setError("An error occurred");
+                        }
                   }
                   try {
                       if(selectedDate !== null) {
@@ -475,7 +550,11 @@ export default function Schedule(props) {
                       }
                   } catch (error) {
                       setLoading(false);
-                      props.setError(error);
+                      if(error.data && error.data.message) {
+                        props.setError(error.data.message);
+                    } else {
+                        props.setError("An error occurred");
+                    }
                   }
                   setLoading(false);
                 }
@@ -513,13 +592,21 @@ export default function Schedule(props) {
                     })
                 } catch (error) {
                     setLoading(false);
-                    props.setError(error.data.message);
+                    if(error.data && error.data.message) {
+                        props.setError(error.data.message);
+                    } else {
+                        props.setError("An error occurred");
+                    }
                 }
                 try {
                     await updateCalendar(machine, year);
                 } catch(error) {
                     setLoading(false);
-                    props.setError(error.data.message);
+                    if(error.data && error.data.message) {
+                        props.setError(error.data.message);
+                    } else {
+                        props.setError("An error occurred");
+                    }
                 }
                 try {
                     if(selectedDate !== null) {
@@ -541,7 +628,11 @@ export default function Schedule(props) {
                     }
                 } catch (error) {
                     setLoading(false);
-                    props.setError(error);
+                    if(error.data && error.data.message) {
+                        props.setError(error.data.message);
+                    } else {
+                        props.setError("An error occurred");
+                    }
                 }
                 setLoading(false);
               }
@@ -575,13 +666,21 @@ export default function Schedule(props) {
             })
         } catch (error) {
             setLoading(false);
-            props.setError(error.data.message);
+            if(error.data && error.data.message) {
+                props.setError(error.data.message);
+            } else {
+                props.setError("An error occurred");
+            }
         }
         try {
             await updateCalendar(machine, year);
         } catch(error) {
             setLoading(false);
-            props.setError(error.data.message);
+            if(error.data && error.data.message) {
+                props.setError(error.data.message);
+            } else {
+                props.setError("An error occurred");
+            }
         }
         setLoading(false);
       }
@@ -589,38 +688,53 @@ export default function Schedule(props) {
       const update = async () => {
         setLoading(true);
         let api = new API();
-        try {
-            await new Promise((resolve, reject) => {
-                api
-                .put(`${ENDPOINT}/maintenance/update`, {
-                    _id: formID,
-                    startDate: formStartDate,
-                    endDate: formEndDate,
-                    actualEndDate: checked ? formActualEndDate : undefined,
-                    machineID: machine
+        if(checked && (formActualEndDate < formStartDate)) {
+            props.setError("Actual end date cannot be lower than the start date")
+        } else {
+            try {
+                await new Promise((resolve, reject) => {
+                    api
+                    .put(`${ENDPOINT}/maintenance/update`, {
+                        _id: formID,
+                        startDate: formStartDate,
+                        endDate: formEndDate,
+                        actualEndDate: checked ? formActualEndDate : undefined,
+                        machineID: machine
+                    })
+                    .then(() => {
+                        resolve();
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    })
                 })
-                .then(() => {
-                    resolve();
-                })
-                .catch((error) => {
-                    reject(error);
-                })
-            })
-        } catch (error) {
-            setLoading(false);
-            props.setError(error.data.message);
-        }
-        try {
-            await updateCalendar(machine, year);
-        } catch(error) {
-            setLoading(false);
-            props.setError(error.data.message);
+            } catch (error) {
+                setLoading(false);
+                if(error.data && error.data.message) {
+                    props.setError(error.data.message);
+                } else {
+                    props.setError("An error occurred");
+                }
+            }
+            try {
+                await updateCalendar(machine, year);
+            } catch(error) {
+                setLoading(false);
+                if(error.data && error.data.message) {
+                    props.setError(error.data.message);
+                } else {
+                    props.setError("An error occurred");
+                }
+            }
         }
         setLoading(false);
       }
       
       const handleChecked = (event) => {
           setChecked(event.target.checked);
+          if(event.target.checked) {
+            if(formActualEndDate < formStartDate){setFormActualEndDate(formStartDate)}
+          }
       }
 
       const handleBreakdownChecked = (event) => {
@@ -629,6 +743,7 @@ export default function Schedule(props) {
 
     return (
         <div style={{width: "100%", height: "100%"}}>
+            <ProductivityMenu />
             { loading ? (
                 <div style={{width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
                     <CircularProgress size={50} />
@@ -673,7 +788,7 @@ export default function Schedule(props) {
                             </FormControl>
                             { machine && (
                                 <div style={{margin: "20px", border: "1px solid black", borderRadius: "20px"}}>
-                                <h2 style={{marginBottom: "5px", marginTop: "5px", fontSize: 30}}><b>Schedule Maintenance</b></h2>
+                                    <h2 style={{marginBottom: "5px", marginTop: "5px", fontSize: 30}}><b>Schedule Maintenance</b></h2>
                                     <hr />
                                     <div style={{marginTop: "20px"}}></div>
                                     <DateRangePicker
@@ -726,7 +841,7 @@ export default function Schedule(props) {
                                                                     </Grid>
                                                                     <Grid item xs={7} sm={7} md={7} lg={7}>
                                                                         <div style={{width: '80%', display: "flex", justifyContent: "flex-start"}}>
-                                                                            <DatePicker maxDate={formEndDate} dateFormat="MMMM d, yyyy" selected={formStartDate} onChange={date => {setFormStartDate(date)}} />
+                                                                            <DatePicker maxDate={formEndDate} dateFormat="MMMM d, yyyy" selected={formStartDate} onChange={date => {setFormStartDate(date);if(formActualEndDate < date && checked){setFormActualEndDate(date)}}} />
                                                                         </div>
                                                                     </Grid>
                                                                     <Grid style={{marginTop: "5px", display: 'flex', justifyContent: 'flex-end'}} item xs={5} sm={5} md={5} lg={5}>

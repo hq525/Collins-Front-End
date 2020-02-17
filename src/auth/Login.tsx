@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, TextField, Checkbox, Paper, Grid, Typography} from '@material-ui/core';
+import { Button, TextField, Checkbox, Paper, Grid, Typography, FormControlLabel} from '@material-ui/core';
 import { Theme } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
 import { observer } from 'mobx-react';
@@ -33,6 +33,9 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage2, setErrorMessage2] = useState("");
+  const [forgetPassword, setForgetPassword] = useState(false);
 
   const handleChange = (e: any ) => {
     switch (e.target.name) {
@@ -49,6 +52,7 @@ const Login = () => {
 
   const handleLogin = (e:any) => {
     e.preventDefault();
+    setErrorMessage("");
     let api = new API();
     api
     .post(`${ENDPOINT}/authentication/signIn`, {username, password})
@@ -60,7 +64,29 @@ const Login = () => {
       userStore.setAuthenticated(true);
     })
     .catch(err => {
-      console.log(err);
+      if(err.data && err.data.message) {
+        setErrorMessage(err.data.message);
+      } else {
+        setErrorMessage("An error occurred")
+      }
+    });
+  }
+
+  const handleSendEmail = (e: any) => {
+    e.preventDefault();
+    setErrorMessage2("");
+    let api = new API();
+    api
+    .post(`${ENDPOINT}/authentication/forget/password`, {username})
+    .then((data) => {
+      setErrorMessage2("Email with new password sent. Please check your email account and login with new password.")
+    })
+    .catch(err => {
+      if(err.data && err.data.message) {
+        setErrorMessage2(err.data.message);
+      } else {
+        setErrorMessage2("An error occurred")
+      }
     });
   }
 
@@ -71,10 +97,83 @@ const Login = () => {
               <img src={CA_Logo} alt="Collins Aerospace Logo" height="auto" width="100%" style={{padding: "60px 60px 60px 60px"}} />
             </Grid>
             <Grid item xs={12} sm={12} md={4} lg={4}>
-              <Paper className={classes.paper} style={{marginLeft: "30px", marginRight: "30px", border: "1px solid black", borderRadius: "25px"}}>
-                <Typography component="h1" variant="h4" align="center">
-                    Login
-                </Typography>
+              { !forgetPassword ? (
+                <Paper className={classes.paper} style={{marginLeft: "30px", marginRight: "30px", border: "1px solid black", borderRadius: "25px"}}>
+                  <Typography component="h1" variant="h4" align="center">
+                      Login
+                  </Typography>
+                    <form className={classes.form} noValidate>
+                      <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                          <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="username"
+                            label="Username"
+                            name="username"
+                            value={username}
+                            autoFocus
+                            onChange={handleChange}
+                          />
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          variant="outlined"
+                          margin="normal"
+                          required
+                          fullWidth
+                          name="password"
+                          type="password"
+                          label="Password"
+                          id="password"
+                          value={password}
+                          onChange={handleChange}
+                        />
+                      </Grid>
+                      <Grid container spacing={2} style={{marginTop: "14px"}}>
+                      <FormControlLabel
+                        style={{paddingLeft: "8px"}}
+                        control={
+                          <Checkbox
+                          checked={remember}
+                          onChange={(event) => {remember ? setRemember(false) : setRemember(true)}}
+                          value="primary"
+                          inputProps={{ 'aria-label': 'primary checkbox' }}
+                          />
+                        }
+                        label="Remember me"
+                      />
+                      </Grid>
+                      { errorMessage && <h3 style={{color: "red"}}>{errorMessage}</h3>}
+                      <Grid container justify="space-between" alignItems="center">
+                        <Grid item>
+                          <Typography variant="body2" style={{ cursor: 'pointer' }}>
+                            <span onClick={() => {setForgetPassword(true)}}>Forgot Password</span>
+                          </Typography>
+                        </Grid>
+                        <Grid item >
+                          <Button
+                          type="submit"
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          className={classes.submit}
+                          onClick={handleLogin}
+                          >
+                          Login
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </form>
+                </Paper>
+              ) : (
+                <Paper className={classes.paper} style={{marginLeft: "30px", marginRight: "30px", border: "1px solid black", borderRadius: "25px"}}>
+                  <Typography component="h1" variant="h4" align="center">
+                      Forgot Password
+                  </Typography>
                   <form className={classes.form} noValidate>
                     <Grid container spacing={2}>
                       <Grid item xs={12}>
@@ -92,51 +191,37 @@ const Login = () => {
                         />
                       </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        type="password"
-                        label="Password"
-                        id="password"
-                        value={password}
-                        onChange={handleChange}
-                      />
+                    <Grid style={{display: "flex", alignItems: "center", justifyContent: "center"}} container spacing={2}>
+                      { errorMessage2 && <h3 style={{color: "red"}}>{errorMessage2}</h3>}
                     </Grid>
-                    <Grid container spacing={2} style={{paddingTop: "15px"}}>
-                      <Checkbox
-                        checked={remember}
-                        onChange={(event) => {setRemember(event.target.checked);}}
-                        color="default"
-                        value="default"
-                        inputProps={{ 'aria-label': 'checkbox with default color' }}
-                      />
-                      <span style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>Remember me</span>
-                    </Grid>
-                    <Grid container style={{paddingLeft: "10px", paddingRight: "10px"}} justify="space-between" alignItems="center">
+                    <Grid container justify="space-between" alignItems="center">
                       <Grid item>
-                      <Typography variant="body2" style={{ cursor: 'pointer' }}>
-                        Forgot Password
-                      </Typography>
-                      </Grid>
-                      <Grid item >
                         <Button
-                        type="submit"
-                        fullWidth
+                        style={{width: "150px"}}
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        onClick={handleLogin}
+                        onClick={() => {setForgetPassword(false)}}
                         >
-                        Login
+                          Back
+                        </Button>
+                      </Grid>
+                      <Grid item >
+                        <Button
+                        style={{width: "150px"}}
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        onClick={handleSendEmail}
+                        >
+                        Send Email
                         </Button>
                       </Grid>
                     </Grid>
                   </form>
-              </Paper>
+                </Paper>
+              )}
             </Grid>
           </Grid>
       </div>

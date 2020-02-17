@@ -1,7 +1,7 @@
 import React from "react";
 import './ComponentData.css'
 import { CircularProgress, Popover, Paper } from '@material-ui/core';
-import { DataTypeProvider, EditingState, FilteringState, IntegratedFiltering} from '@devexpress/dx-react-grid';
+import { DataTypeProvider, EditingState } from '@devexpress/dx-react-grid';
 import { Grid, Table, TableHeaderRow, TableEditRow, TableEditColumn } from '@devexpress/dx-react-grid-material-ui';
 import DropdownList from 'react-widgets/lib/DropdownList'
 import { ENDPOINT } from "../../utils/config";
@@ -70,7 +70,11 @@ export default function SectionData(props) {
                 })
             } catch (error) {
                 setLoading(false);
-                props.setError(error.data.message);
+                if(error.data && error.data.message) {
+                    props.setError(error.data.message);
+                } else {
+                    props.setError("An error occurred");
+                }
             }
             api
             .get(`${ENDPOINT}/component/all`)
@@ -84,7 +88,11 @@ export default function SectionData(props) {
             })
             .catch(err => {
                 setLoading(false);
-                console.log(err);
+                if(err.data && err.data.message) {
+                    props.setError(err.data.message);
+                } else {
+                    props.setError("An error occurred");
+                }
             });
         }
         initialize();
@@ -106,7 +114,7 @@ export default function SectionData(props) {
         { columnName: 'machineSection', editingEnabled: false}
       ]);
 
-    const commitSectionChanges = ({ added, changed, deleted }) => {
+    const commitComponentChanges = ({ added, changed, deleted }) => {
         let changedRows = componentData;
         let api = new API();
         if (added) {
@@ -152,7 +160,11 @@ export default function SectionData(props) {
             })
             .catch((error) => {
                 setLoading(false);
-                console.log(error);
+                if(error.data && error.data.message) {
+                    props.setError(error.data.message);
+                } else {
+                    props.setError("An error occurred");
+                }
             })
         }
         if (deleted) {
@@ -178,7 +190,11 @@ export default function SectionData(props) {
             })
             .catch((error) => {
                 setLoading(false);
-                console.log(error);
+                if(error.data && error.data.message) {
+                    props.setError(error.data.message);
+                } else {
+                    props.setError("An error occurred");
+                }
             })
         }
       };
@@ -302,7 +318,7 @@ export default function SectionData(props) {
                             onRowChangesChange={setRowChanges}
                             addedRows={addedRows}
                             onAddedRowsChange={changeAddedRows}
-                            onCommitChanges={commitSectionChanges}
+                            onCommitChanges={commitComponentChanges}
                             columnExtensions={editingStateColumnExtensions}
                             />
                             <Table 

@@ -11,6 +11,7 @@ import DropdownList from 'react-widgets/lib/DropdownList'
 import 'react-widgets/dist/css/react-widgets.css';
 import { confirmAlert } from 'react-confirm-alert'; 
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
+import ProductivityMenu  from "./ProductivityMenu"
 
 const MapImage = () => {
     const [image] = useImage(process.env.PUBLIC_URL + '/Map.jpg');
@@ -65,7 +66,11 @@ export default function Edit(props) {
         })
         .catch(err => {
             setLoading(false);
-            console.log(err);
+            if(err.data && err.data.message) {
+                props.setError(err.data.message);
+            } else {
+                props.setError("An error occurred");
+            }
         });
         api
         .get(`${ENDPOINT}/machine`)
@@ -90,7 +95,11 @@ export default function Edit(props) {
             setMachineIDs(tempArray);
         })
         .catch((error) => {
-            props.setError(error.data.message);
+            if(error.data && error.data.message) {
+                props.setError(error.data.message);
+            } else {
+                props.setError("An error occurred");
+            }
         })
         api
         .get(`${ENDPOINT}/text`)
@@ -114,7 +123,11 @@ export default function Edit(props) {
             setTextIDs(tempArray);
         })
         .catch((error) => {
-            props.setError(error.data.message);
+            if(error.data && error.data.message) {
+                props.setError(error.data.message);
+            } else {
+                props.setError("An error occurred");
+            }
         })
     }, []);
     const createNewMachine = (event) => {
@@ -144,7 +157,11 @@ export default function Edit(props) {
             setLoading(false);
         })
         .catch((error) => {
-            props.setError(error.data.message);
+            if(error.data && error.data.message) {
+                props.setError(error.data.message);
+            } else {
+                props.setError("An error occurred");
+            }
             setLoading(false);
         })
     }
@@ -173,7 +190,11 @@ export default function Edit(props) {
             setLoading(false);
         })
         .catch((error) => {
-            props.setError(error.data.message);
+            if(error.data && error.data.message) {
+                props.setError(error.data.message);
+            } else {
+                props.setError("An error occurred");
+            }
             setLoading(false);
         })
     }
@@ -192,7 +213,11 @@ export default function Edit(props) {
             setAllTexts(new Map(allTexts.set(selectedTextID, temp)));
         })
         .catch((error) => {
-            props.setError(error.data.message);
+            if(error.data && error.data.message) {
+                props.setError(error.data.message);
+            } else {
+                props.setError("An error occurred");
+            }
         })
     }
     const resetSingleMachine = () => {
@@ -212,7 +237,11 @@ export default function Edit(props) {
             setDropdownValue(data.machine.sectionID);
         })
         .catch((error) => {
-            props.setError(error.data.message);
+            if(error.data && error.data.message) {
+                props.setError(error.data.message);
+            } else {
+                props.setError("An error occurred");
+            }
         })
     }
     const resetAllText = () => {
@@ -242,7 +271,11 @@ export default function Edit(props) {
         })
         .catch((error) => {
             setLoading(false);
-            props.setError(error.data.message);
+            if(error.data && error.data.message) {
+                props.setError(error.data.message);
+            } else {
+                props.setError("An error occurred");
+            }
         })
     }
     const resetAllMachines = () => {
@@ -274,7 +307,11 @@ export default function Edit(props) {
         })
         .catch((error) => {
             setLoading(false);
-            props.setError(error.data.message);
+            if(error.data && error.data.message) {
+                props.setError(error.data.message);
+            } else {
+                props.setError("An error occurred");
+            }
         })
     }
     const updateMachine = () => {
@@ -304,7 +341,11 @@ export default function Edit(props) {
         })
         .catch((error) => {
             setLoading(false);
-            props.setError(error.data.message);
+            if(error.data && error.data.message) {
+                props.setError(error.data.message);
+            } else {
+                props.setError("An error occurred");
+            }
         })
     }
     const deleteMachine = () => {
@@ -348,12 +389,20 @@ export default function Edit(props) {
                         })
                         .catch((error) => {
                             setLoading(false);
-                            props.setError(error.data.message);
+                            if(error.data && error.data.message) {
+                                props.setError(error.data.message);
+                            } else {
+                                props.setError("An error occurred");
+                            }
                         })
                     })
                     .catch((error) => {
                         setLoading(false);
-                        props.setError(error.data.message);
+                        if(error.data && error.data.message) {
+                            props.setError(error.data.message);
+                        } else {
+                            props.setError("An error occurred");
+                        }
                     })
                 }
               },
@@ -389,7 +438,11 @@ export default function Edit(props) {
         })
         .catch((error) => {
             setLoading(false);
-            props.setError(error.data.message);
+            if(error.data && error.data.message) {
+                props.setError(error.data.message);
+            } else {
+                props.setError("An error occurred");
+            }
         })
     }
     const deleteText = () => {
@@ -432,12 +485,20 @@ export default function Edit(props) {
                         })
                         .catch((error) => {
                             setLoading(false);
-                            props.setError(error.data.message);
+                            if(error.data && error.data.message) {
+                                props.setError(error.data.message);
+                            } else {
+                                props.setError("An error occurred");
+                            }
                         })
                     })
                     .catch((error) => {
                         setLoading(false);
-                        props.setError(error.data.message);
+                        if(error.data && error.data.message) {
+                            props.setError(error.data.message);
+                        } else {
+                            props.setError("An error occurred");
+                        }
                     })
                 }
               },
@@ -450,6 +511,7 @@ export default function Edit(props) {
     }
     return (
         <div style={{display: "flex", justifyContent: "center", height: "100%"}}>
+            <ProductivityMenu />
             { loading ? (
                 <div style={{height: "100%", width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
                     <CircularProgress size={50} />
@@ -759,7 +821,7 @@ export default function Edit(props) {
                                 }
                             </div>
                             <div style={{position: "absolute", bottom: "0px", display: 'flex', justifyContent: 'center', width: '100%'}}>
-                                <Link style={{width: "100%"}} to="/"><Button style={{width: "80%"}} variant="contained" color="primary">Back to map</Button></Link>
+                                <Link style={{width: "100%"}} to="/Productivity"><Button style={{width: "80%"}} variant="contained" color="primary">Back to map</Button></Link>
                             </div>
                         </div>
                     ) }

@@ -11,9 +11,9 @@ export default function Legend(props) {
                         return(
                             <ListItem button >
                                 <svg width={14} height={14} viewBox={"0 0 32 32"} version={"1.1"} style={{display: "inline-block", verticalAlign: "middle", marginRight: "4px"}}>
-                                    <path stroke={"none"} fill={"#0088FE"} d={"M0,4h32v24h-32z"}></path>
+                                    <path stroke={"none"} fill={props.colors[index % props.colors.length]} d={"M0,4h32v24h-32z"}></path>
                                 </svg>
-                                <ListItemText primary="Inbox" />
+                                <ListItemText primary={`${entry.name}`} />
                             </ListItem>
                     )})
                 }

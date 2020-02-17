@@ -1,0 +1,17 @@
+.maintenance {
+    background-color: #ff9900 !important;
+    color: white !important;
+}
+
+.maintenance:hover {
+    background-color: #ffb84d !important;
+}
+
+.alert {
+    background-color: #ff0000 !important;
+    color: white !important;
+}
+
+.alert:hover {
+    background-color: #ff8080 !important;
+}

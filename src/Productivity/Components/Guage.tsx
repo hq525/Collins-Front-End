@@ -52,7 +52,7 @@ export default function Guage(props) {
                         fill = {'black'}
                         rotation={-5}
                         />
-                        {
+                        {/* {
                             props.customSegmentStops.map(value => 
                                 <Line 
                                 points={[props.stageWidth / 2 - props.width / 2, props.stageHeight / 2 + props.height / 2 - props.height * value, props.stageWidth / 2 - props.width / 2 - 10, props.stageHeight / 2 + props.height / 2 - props.height * value]}
@@ -74,7 +74,7 @@ export default function Guage(props) {
                                 align={'center'}
                                 />    
                             )
-                        }
+                        } */}
                     </Layer>
                 </Stage>
     )

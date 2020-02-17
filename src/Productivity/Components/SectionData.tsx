@@ -27,7 +27,11 @@ export default function SectionData(props) {
         })
         .catch(err => {
             setLoading(false);
-            console.log(err);
+            if(err.data && err.data.message) {
+                props.setError(err.data.message);
+            } else {
+                props.setError("An error occurred");
+            }
         });
     }, []);
     const [editingRowIds, setEditingRowIds] = React.useState([]);
@@ -72,8 +76,12 @@ export default function SectionData(props) {
             setSectionData(changedRows);
           })
           .catch((error) => {
-              setLoading(false);
-              console.log(error);
+                setLoading(false);
+                if(error.data && error.data.message) {
+                    props.setError(error.data.message);
+                } else {
+                    props.setError("An error occurred");
+                }
           })
         }
         if (changed) {
@@ -88,7 +96,11 @@ export default function SectionData(props) {
             })
             .catch((error) => {
                 setLoading(false);
-                console.log(error);
+                if(error.data && error.data.message) {
+                    props.setError(error.data.message);
+                } else {
+                    props.setError("An error occurred");
+                }
             })
         }
         if (deleted) {
@@ -114,7 +126,11 @@ export default function SectionData(props) {
             })
             .catch((error) => {
                 setLoading(false);
-                console.log(error);
+                if(error.data && error.data.message) {
+                    props.setError(error.data.message);
+                } else {
+                    props.setError("An error occurred");
+                }
             })
         }
       };
